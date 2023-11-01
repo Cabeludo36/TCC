@@ -11,16 +11,18 @@ useHead({
   <div class="md:p-8">
     <div class="flex flex-col w-full border-opacity-50">
       <div class="grid card bg-base-300 rounded-box place-items-center md:p-3">
+        <div class="flex flex-col md:flex-row w-full">
         <div class="m-1 w-full">
           <CamposInserirRenda />
         </div>
         <div class="m-1 w-full">
-          <CamposInserirDispesas />
+          <CamposInserirDispesa />
         </div>
+      </div>
       </div>
       <div class="divider">Resumo</div>
       <div class="grid card bg-base-300 rounded-box place-items-center">
-        <GraficosEntradaSaida />
+        <GraficosEntradaSaidas />
         <GraficosTiposDispesas />
         <ResumosReceitaDispesas />
         <Geral />
