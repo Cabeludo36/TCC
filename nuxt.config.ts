@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/supabase",
     "@vueuse/nuxt",
-    "nuxt-icon",
+    "nuxt-icon",  
   ],
   typescript: {
     strict: true,
@@ -17,8 +17,8 @@ export default defineNuxtConfig({
     redirect: false,
     clientOptions: {
       auth: {
-        persistSession: true
-      }
+        persistSession: true,
+      },
     },
   },
-})
+});
