@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+model entrada_saida {
+  id_entrada_saida      Int                @id @default(autoincrement())
+  id_tipo_entrada_saida Int
+  valor                 Decimal            @db.Money
+  tipo_entrada_saida    tipo_entrada_saida @relation(fields: [id_tipo_entrada_saida], references: [id_tipo_entrada_saida])
+}
+
+model tipo_entrada_saida {
+  id_tipo_entrada_saida Int     @id @default(autoincrement())
+  nome                  String  @db.VarChar(50)
+  decricao              String  @db.VarChar(200)
+  ehParaEntrada         Boolean
+
+  entradas_saidas entrada_saida[]
+}
