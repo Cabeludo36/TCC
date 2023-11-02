@@ -67,10 +67,13 @@ watch(data, () => {
         </div>
       </div>
       <div class="divider">Resumo</div>
-      <div class="grid card bg-base-300 rounded-box place-items-center">
+      <div class="grid card bg-base-300 rounded-box place-items-center p-6">
+        <div class="flex flex-row">
+          <Geral :dispesas-renda-resumo="dispesasRendaResumo" />
+        </div>
         <div class="flex flex-row w-full">
-          <div class="w-full h-56">
-            <div class="flex flex-col w-72 ml-3">
+          <div class="w-full md:w-80">
+            <div class="flex flex-col w-full ml-3">
               <h4 class="ml-3 font-medium">Porcentagem da Receita Restante</h4>
               <div class="flex flex-row items-center">
                 <progress
@@ -78,17 +81,16 @@ watch(data, () => {
                   :value="porcentagem"
                   max="100"
                 ></progress>
-                <span class="ml-2">{{ porcentagem.toFixed(2) }}</span>
+                <span class="ml-2">{{ porcentagem.toFixed(2) }}%</span>
               </div>
             </div>
             <ResumosReceitaDispesas
               :dispesas-renda-resumo="dispesasRendaResumo"
             />
           </div>
+          <GraficosTiposDispesas />
         </div>
         <GraficosEntradaSaidas />
-        <GraficosTiposDispesas />
-        <Geral />
       </div>
     </div>
   </div>
