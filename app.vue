@@ -71,7 +71,7 @@ watch(data, () => {
         <div class="flex flex-row">
           <Geral :dispesas-renda-resumo="dispesasRendaResumo" />
         </div>
-        <div class="flex flex-row w-full">
+        <div class="flex flex-row md:w-40 lg:w-full">
           <div class="w-full md:w-80">
             <div class="flex flex-col w-full ml-3">
               <h4 class="ml-3 font-medium">Porcentagem da Receita Restante</h4>
