@@ -163,6 +163,7 @@ async function salvar() {
       <SharedDateInput
         v-model:model-value="data"
         class="input input-bordered w-full bg-slate-200 md:max-w-xs"
+        v-bind:class="{'input-error': dataError != ''}"
         placeholder="DD/MM/AAAA"
       />
       <label v-if="dataError != ''" class="label">
