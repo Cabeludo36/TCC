@@ -27,7 +27,7 @@ let pageInfo = data.value as Exclude<typeof data.value, string>;
 const tiposRendaDispesa = useState<tipoRendaDispesa[]>("tiposDispesaEntrada");
 tiposRendaDispesa.value = [];
 const dispesasRendaResumo = ref({ dispeas: 0, renda: 0, diferenca: 0 });
-
+const porcentagem = ref(0);
 function setValues() {
   pageInfo = data.value as Exclude<typeof data.value, string>;
   if (pageInfo?.tipos) tiposRendaDispesa.value = pageInfo.tipos;
@@ -38,6 +38,10 @@ function setValues() {
       renda: pageInfo.dispesasRendaResumo.renda,
       diferenca: pageInfo.dispesasRendaResumo.diferenca,
     };
+  }
+
+  if (pageInfo?.porcentagemRestante) {
+    porcentagem.value = pageInfo?.porcentagemRestante;
   }
 }
 setValues();
@@ -64,7 +68,24 @@ watch(data, () => {
       </div>
       <div class="divider">Resumo</div>
       <div class="grid card bg-base-300 rounded-box place-items-center">
-        <ResumosReceitaDispesas :dispesas-renda-resumo="dispesasRendaResumo" />
+        <div class="flex flex-row w-full">
+          <div class="w-full h-56">
+            <div class="flex flex-col w-72 ml-3">
+              <h4 class="ml-3 font-medium">Porcentagem da Receita Restante</h4>
+              <div class="flex flex-row items-center">
+                <progress
+                  class="progress progress-success w-full"
+                  :value="porcentagem"
+                  max="100"
+                ></progress>
+                <span class="ml-2">{{ porcentagem.toFixed(2) }}</span>
+              </div>
+            </div>
+            <ResumosReceitaDispesas
+              :dispesas-renda-resumo="dispesasRendaResumo"
+            />
+          </div>
+        </div>
         <GraficosEntradaSaidas />
         <GraficosTiposDispesas />
         <Geral />
