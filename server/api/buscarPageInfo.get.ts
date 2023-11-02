@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     });
     //#endregion
 
-    //#region calculos dispesas, renda e diferença
+    //#region calculos dispesas, renda, diferença e porcentagem
     const dispeas = await prisma.entrada_saida.aggregate({
       _sum: {
         valor: true,
@@ -42,6 +42,10 @@ export default defineEventHandler(async (event) => {
       diferenca = Number(Number(renda._sum.valor) - Number(dispeas._sum.valor));
     }
 
+    let porcentagem = null
+    if(diferenca !== null){
+      porcentagem = (100 / Number(renda._sum.valor)) * diferenca
+    }
     //#endregion
 
     r = {
@@ -56,8 +60,9 @@ export default defineEventHandler(async (event) => {
       dispesasRendaResumo: {
         dispeas: Number(dispeas._sum.valor),
         renda: Number(renda._sum.valor),
-        diferenca: Number(diferenca)
-      }
+        diferenca: Number(diferenca),
+      },
+      porcentagemRestante: Number(porcentagem)
     };
   } catch (error) {
     setResponseStatus(event, 500);
