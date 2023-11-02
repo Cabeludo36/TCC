@@ -64,12 +64,20 @@ watch(data, () => {
   <div class="p-2 md:p-8">
     <div class="flex flex-col w-full border-opacity-50">
       <div class="grid card bg-base-300 rounded-box place-items-center md:p-3">
-        <div class="flex flex-col md:flex-row w-full">
-          <div class="m-1 w-full">
-            <CamposInserirRenda @valor-adicionado="refeshDash()" />
+        <div class="collapse bg-base-200">
+          <input type="checkbox" />
+          <div class="collapse-title text-xl font-medium">
+            Clique para editar os valores
           </div>
-          <div class="m-1 w-full">
-            <CamposInserirDispesa @valor-adicionado="refeshDash()" />
+          <div class="collapse-content">
+            <div class="flex flex-col md:flex-row w-full">
+              <div class="m-1 w-full">
+                <CamposInserirRenda @valor-adicionado="refeshDash()" />
+              </div>
+              <div class="m-1 w-full">
+                <CamposInserirDispesa @valor-adicionado="refeshDash()" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
