@@ -42,12 +42,36 @@ export default defineEventHandler(async (event) => {
       diferenca = Number(Number(renda._sum.valor) - Number(dispeas._sum.valor));
     }
 
-    let porcentagem = null
-    if(diferenca !== null){
-      porcentagem = (100 / Number(renda._sum.valor)) * diferenca
+    let porcentagem = null;
+    if (diferenca !== null) {
+      porcentagem = (100 / Number(renda._sum.valor)) * diferenca;
     }
     //#endregion
 
+    //#region porcentagem cada gasto
+    let porcentagemGastos;
+    const gbTipoSaida = await prisma.entrada_saida.groupBy({
+      by: "id_tipo_entrada_saida",
+      _sum: {
+        valor: true,
+      },
+      where: {
+        tipo_entrada_saida: {
+          ehParaEntrada: false,
+        },
+      },
+    });
+
+    porcentagemGastos = gbTipoSaida.map((x) => {
+      const tipo = tipos.filter(
+        (y) => y.id_tipo_entrada_saida == x.id_tipo_entrada_saida
+      )[0];
+
+      const per = (100 / Number(dispeas._sum.valor)) * Number(x._sum.valor);
+      return { soma: Number(x._sum.valor), tipo: tipo.nome, per: per };
+    });
+    
+    //#endregion
     r = {
       tipos: tipos.map((x) => {
         return {
@@ -62,7 +86,8 @@ export default defineEventHandler(async (event) => {
         renda: Number(renda._sum.valor),
         diferenca: Number(diferenca),
       },
-      porcentagemRestante: Number(porcentagem)
+      porcentagemRestante: Number(porcentagem),
+      porcentagemGastos: porcentagemGastos,
     };
   } catch (error) {
     setResponseStatus(event, 500);

@@ -28,6 +28,9 @@ const tiposRendaDispesa = useState<tipoRendaDispesa[]>("tiposDispesaEntrada");
 tiposRendaDispesa.value = [];
 const dispesasRendaResumo = ref({ dispeas: 0, renda: 0, diferenca: 0 });
 const porcentagem = ref(0);
+const porcentagemTiposDespesa = ref<
+  { soma: number; tipo: string; per: number }[]
+>([]);
 function setValues() {
   pageInfo = data.value as Exclude<typeof data.value, string>;
   if (pageInfo?.tipos) tiposRendaDispesa.value = pageInfo.tipos;
@@ -42,6 +45,10 @@ function setValues() {
 
   if (pageInfo?.porcentagemRestante) {
     porcentagem.value = pageInfo?.porcentagemRestante;
+  }
+
+  if (pageInfo?.porcentagemGastos) {
+    porcentagemTiposDespesa.value = pageInfo.porcentagemGastos;
   }
 }
 setValues();
@@ -68,10 +75,10 @@ watch(data, () => {
       </div>
       <div class="divider">Resumo</div>
       <div class="grid card bg-base-300 rounded-box place-items-center p-6">
-        <div class="flex flex-row">
-          <Geral :dispesas-renda-resumo="dispesasRendaResumo" />
-        </div>
-        <div class="flex flex-row md:w-40 lg:w-full">
+        <div class="flex flex-row"></div>
+        <div
+          class="flex flex-col justify-between md:flex-row md:w-40 lg:w-full"
+        >
           <div class="w-full md:w-80">
             <div class="flex flex-col w-full ml-3">
               <h4 class="ml-3 font-medium">Porcentagem da Receita Restante</h4>
@@ -88,7 +95,12 @@ watch(data, () => {
               :dispesas-renda-resumo="dispesasRendaResumo"
             />
           </div>
-          <GraficosTiposDispesas />
+          <div class="flex flex-col w-full md:w-60 m-4 items-center">
+            <Geral :dispesas-renda-resumo="dispesasRendaResumo" />
+          </div>
+          <div class="flex flex-col w-full md:w-60 m-4 items-center">
+            <GraficosTiposDispesas :dispesas-resumo="porcentagemTiposDespesa" />
+          </div>
         </div>
         <GraficosEntradaSaidas />
       </div>
