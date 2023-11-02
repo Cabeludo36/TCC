@@ -1,25 +1,14 @@
 <script setup lang="ts">
-//#region quantia
-const quantia = ref(0);
-//#endregion
+
+const exibirTipos = ref(false);
 </script>
 <template>
   <div class="w-full bg-slate-300 rounded-md p-2">
-    <div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Quantia</span>
-        </label>
-        <SharedCurrencyInput
-          v-model="quantia"
-          class="input input-bordered w-full max-w-xs bg-slate-200"
-          placeholder="R$ 123,00"
-        />
-
-        <label class="label">
-          <span class="label-text-alt">Bottom Left label</span>
-        </label>
-      </div>
+    <div class="flex w-full justify-center">
+      <h1 v-if="!exibirTipos" class="text-2xl font-medium">Renda</h1>
+      <h1 v-if="exibirTipos" class="text-2xl font-medium">Tipos de Renda</h1>
     </div>
+    <CamposValoresRenda @abrir-tipos="exibirTipos = true" v-if="!exibirTipos" />
+    <LazyCamposTiposRenda @fechar-tipos="exibirTipos = false" v-if="exibirTipos" />
   </div>
 </template>

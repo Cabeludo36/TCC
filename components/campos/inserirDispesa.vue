@@ -1,6 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const exibirTipos = ref(false);
+</script>
 <template>
   <div class="w-full bg-slate-300 rounded-md p-2">
-    dispesas
+    <div class="flex w-full justify-center">
+      <h1 v-if="!exibirTipos" class="text-2xl font-medium">Custos</h1>
+      <h1 v-if="exibirTipos" class="text-2xl font-medium">Tipos de Custo</h1>
+    </div>
+    <CamposValoresDispesa @abrir-tipos="exibirTipos = true" v-if="!exibirTipos" />
+    <LazyCamposTiposDispesa @fechar-tipos="exibirTipos = false" v-if="exibirTipos" />
   </div>
 </template>
