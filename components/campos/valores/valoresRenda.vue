@@ -2,7 +2,7 @@
 import moment from "moment";
 import type { tipoRendaDispesa } from "~/types/states";
 
-defineEmits(["abrirTipos"]);
+const emits = defineEmits(["abrirTipos", "valorAdicionado"]);
 
 const tiposRenda = useState<tipoRendaDispesa[]>(
   "tiposDispesaEntrada"
@@ -50,7 +50,7 @@ function verificaData() {
   }
   let newData;
   try {
-    newData = moment(dataF, 'DD/MM/YYYY', true);
+    newData = moment(dataF, "DD/MM/YYYY", true);
   } catch (error) {
     dataError.value = "Data invalida";
     return false;
@@ -78,7 +78,6 @@ const {
   error,
   pending,
   execute,
-  refresh,
 } = useFetch("/api/salvarValor", {
   method: "POST",
   body: {
@@ -113,9 +112,7 @@ async function salvar() {
     formError.value = "Um erro inesperado ocorreu";
     return;
   }
-
-  const retorno = resposta.value as Exclude<typeof data.value, string>;
-  console.log(retorno);
+  emits('valorAdicionado')
 }
 
 //#endregion
@@ -163,7 +160,7 @@ async function salvar() {
       <SharedDateInput
         v-model:model-value="data"
         class="input input-bordered w-full bg-slate-200 md:max-w-xs"
-        v-bind:class="{'input-error': dataError != ''}"
+        v-bind:class="{ 'input-error': dataError != '' }"
         placeholder="DD/MM/AAAA"
       />
       <label v-if="dataError != ''" class="label">
@@ -191,7 +188,11 @@ async function salvar() {
     <button @click="$emit('abrirTipos')" class="btn btn-info">
       Tipos de Renda
     </button>
-    <button :disabled="pending" @click="salvar()" class="btn btn-success max-md:mt-2">
+    <button
+      :disabled="pending"
+      @click="salvar()"
+      class="btn btn-success max-md:mt-2"
+    >
       Salvar
     </button>
   </div>

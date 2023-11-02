@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineEmits(["update:modelValue"]);
+const emits = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   modelValue: String,
@@ -19,6 +19,7 @@ function formatData() {
   }
 
   data.value = formatted.slice(0, 10); // Ensure the length does not exceed MM/DD/YYYY
+  emits("update:modelValue", data.value);
 }
 </script>
 <template>
@@ -28,11 +29,6 @@ function formatData() {
     v-model="data"
     :class="$attrs.class"
     :placeholder="$attrs.placeholder"
-    @input="
-      (value) => {
-        formatData();
-        $emit('update:modelValue', data);
-      }
-    "
+    @input="formatData()"
   />
 </template>

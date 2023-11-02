@@ -18,17 +18,36 @@ const { data, pending, refresh, execute, error } = await useFetch(
   }
 );
 pending.value = true;
-await execute()
+
+await execute();
 if (error.value) {
 }
 
-const pageInfo = data.value as Exclude<typeof data.value, string>;
+let pageInfo = data.value as Exclude<typeof data.value, string>;
 const tiposRendaDispesa = useState<tipoRendaDispesa[]>("tiposDispesaEntrada");
+tiposRendaDispesa.value = [];
+const dispesasRendaResumo = ref({ dispeas: 0, renda: 0, diferenca: 0 });
 
-tiposRendaDispesa.value = []
+function setValues() {
+  pageInfo = data.value as Exclude<typeof data.value, string>;
+  if (pageInfo?.tipos) tiposRendaDispesa.value = pageInfo.tipos;
 
-if(pageInfo?.tipos)
-  tiposRendaDispesa.value = pageInfo.tipos;
+  if (pageInfo?.dispesasRendaResumo) {
+    dispesasRendaResumo.value = {
+      dispeas: pageInfo.dispesasRendaResumo.dispeas,
+      renda: pageInfo.dispesasRendaResumo.renda,
+      diferenca: pageInfo.dispesasRendaResumo.diferenca,
+    };
+  }
+}
+setValues();
+
+async function refeshDash() {
+  refresh();
+}
+watch(data, () => {
+  setValues();
+});
 </script>
 <template>
   <div class="p-2 md:p-8">
@@ -36,18 +55,18 @@ if(pageInfo?.tipos)
       <div class="grid card bg-base-300 rounded-box place-items-center md:p-3">
         <div class="flex flex-col md:flex-row w-full">
           <div class="m-1 w-full">
-            <CamposInserirRenda />
+            <CamposInserirRenda @valor-adicionado="refeshDash()" />
           </div>
           <div class="m-1 w-full">
-            <CamposInserirDispesa />
+            <CamposInserirDispesa @valor-adicionado="refeshDash()" />
           </div>
         </div>
       </div>
       <div class="divider">Resumo</div>
       <div class="grid card bg-base-300 rounded-box place-items-center">
+        <ResumosReceitaDispesas :dispesas-renda-resumo="dispesasRendaResumo" />
         <GraficosEntradaSaidas />
         <GraficosTiposDispesas />
-        <ResumosReceitaDispesas />
         <Geral />
       </div>
     </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+defineEmits(["valorAdicionado"]);
 const exibirTipos = ref(false);
 </script>
 <template>
@@ -8,7 +8,14 @@ const exibirTipos = ref(false);
       <h1 v-if="!exibirTipos" class="text-2xl font-medium">Renda</h1>
       <h1 v-if="exibirTipos" class="text-2xl font-medium">Tipos de Renda</h1>
     </div>
-    <CamposValoresRenda @abrir-tipos="exibirTipos = true" v-if="!exibirTipos" />
-    <LazyCamposTiposRenda @fechar-tipos="exibirTipos = false" v-if="exibirTipos" />
+    <CamposValoresRenda
+      @valor-adicionado="$emit('valorAdicionado')"
+      @abrir-tipos="exibirTipos = true"
+      v-if="!exibirTipos"
+    />
+    <LazyCamposTiposRenda
+      @fechar-tipos="exibirTipos = false"
+      v-if="exibirTipos"
+    />
   </div>
 </template>

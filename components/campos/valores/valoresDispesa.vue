@@ -2,7 +2,7 @@
 import moment from "moment";
 import type { tipoRendaDispesa } from "~/types/states";
 
-defineEmits(["abrirTipos"]);
+const emits = defineEmits(["abrirTipos", 'valorAdicionado']);
 
 const tiposCusto = useState<tipoRendaDispesa[]>(
   "tiposDispesaEntrada"
@@ -78,7 +78,6 @@ const {
   error,
   pending,
   execute,
-  refresh,
 } = useFetch("/api/salvarValor", {
   method: "POST",
   body: {
@@ -114,8 +113,7 @@ async function salvar() {
     return;
   }
 
-  const retorno = resposta.value as Exclude<typeof data.value, string>;
-  console.log(retorno);
+  emits('valorAdicionado')
 }
 
 //#endregion

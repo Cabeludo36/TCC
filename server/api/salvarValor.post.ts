@@ -9,20 +9,16 @@ type bodyType = {
 
 export default defineEventHandler(async (event) => {
   const body = (await readBody(event)) as bodyType;
-
   let r = null;
   try {
-    const newVal = await prisma.entrada_saida.create({
+    await prisma.entrada_saida.create({
       data: {
-        data: moment(body.quando).utc(false).toISOString(),
+        data: moment(body.quando, 'DD/MM/YYYY', true).utc(false).toISOString(),
         valor: body.quantia,
         id_tipo_entrada_saida: Number(body.tipo),
       },
     });
-
-    r = {
-      newVal: newVal,
-    };
+    setResponseStatus(event, 200)
   } catch (error) {
     if (typeof error == "string") {
       setResponseStatus(event, 400);
