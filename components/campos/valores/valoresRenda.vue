@@ -50,7 +50,7 @@ function verificaData() {
   }
   let newData;
   try {
-    newData = moment(dataF);
+    newData = moment(dataF, 'DD/MM/YYYY', true);
   } catch (error) {
     dataError.value = "Data invalida";
     return false;
@@ -190,7 +190,7 @@ async function salvar() {
     <button @click="$emit('abrirTipos')" class="btn btn-info">
       Tipos de Renda
     </button>
-    <button @click="salvar()" class="btn btn-success max-md:mt-2">
+    <button :disabled="pending" @click="salvar()" class="btn btn-success max-md:mt-2">
       Salvar
     </button>
   </div>
