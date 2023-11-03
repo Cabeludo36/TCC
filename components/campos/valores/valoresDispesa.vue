@@ -5,7 +5,7 @@ import type { tipoRendaDispesa } from "~/types/states";
 const emits = defineEmits(["abrirTipos", 'valorAdicionado']);
 
 const tiposCusto = useState<tipoRendaDispesa[]>(
-  "tiposDispesaEntrada"
+  "tiposRendaDispesa"
 ).value?.filter((x) => x.ehEntrada === false);
 
 //#region quantia

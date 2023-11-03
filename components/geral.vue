@@ -1,14 +1,8 @@
 <script setup lang="ts">
-const props = defineProps({
-    dispesasRendaResumo: {
-    default: { dispeas: 0, renda: 0, diferenca: 0 },
-    type: Object as PropType<{
-      dispeas: number;
-      renda: number;
-      diferenca: number;
-    }>,
-  },
-})
+import type { tipoDispesasRendaResumo } from '~/types/states';
+
+const dispesasRendaResumo = useState<tipoDispesasRendaResumo>('dispesasRendaResumo');
+
 </script>
 <template>
 <div class="flex flex-col w-full justify-center">

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { tipoRendaDispesa } from "./types/states";
+import type {
+  tipoDispesasRendaResumo,
+  tipoInfoTabelaGastosEntradas,
+  tipoPorcentagemTiposDespesa,
+  tipoRendaDispesa,
+} from "./types/states";
 
 useHead({
   title: "Bugedt Tracker",
@@ -24,22 +29,18 @@ if (error.value) {
 }
 
 let pageInfo = data.value as Exclude<typeof data.value, string>;
-const tiposRendaDispesa = useState<tipoRendaDispesa[]>("tiposDispesaEntrada");
-tiposRendaDispesa.value = [];
-const dispesasRendaResumo = ref({ dispeas: 0, renda: 0, diferenca: 0 });
-const porcentagem = ref(0);
-const porcentagemTiposDespesa = ref<
-  { soma: number; tipo: string; per: number }[]
->([]);
-const infoTabelaGastosEntradas = ref<
-  {
-    id_entrada_saida: number;
-    data: string;
-    valor: number;
-    tipo: string;
-    style: string;
-  }[]
->([]);
+const tiposRendaDispesa = useState<tipoRendaDispesa[]>("tiposRendaDispesa");
+const dispesasRendaResumo = useState<tipoDispesasRendaResumo>(
+  "dispesasRendaResumo"
+);
+const porcentagem = useState<number>("porcentagem");
+const porcentagemTiposDespesa = useState<tipoPorcentagemTiposDespesa[]>(
+  "porcentagemTiposDespesa"
+);
+const infoTabelaGastosEntradas = useState<tipoInfoTabelaGastosEntradas[]>(
+  "infoTabelaGastosEntradas"
+);
+
 function setValues() {
   pageInfo = data.value as Exclude<typeof data.value, string>;
   if (pageInfo?.tipos) tiposRendaDispesa.value = pageInfo.tipos;
@@ -66,7 +67,7 @@ function setValues() {
 }
 setValues();
 
-async function refeshDash() {
+function refeshDash() {
   refresh();
 }
 watch(data, () => {
@@ -111,22 +112,18 @@ watch(data, () => {
                 <span class="ml-2">{{ porcentagem.toFixed(2) }}%</span>
               </div>
             </div>
-            <ResumosReceitaDispesas
-              :dispesas-renda-resumo="dispesasRendaResumo"
-            />
+            <ResumosReceitaDispesas />
           </div>
           <div class="flex flex-col w-full md:w-60 m-4 items-center">
-            <Geral :dispesas-renda-resumo="dispesasRendaResumo" />
+            <Geral />
           </div>
           <div class="flex flex-col w-full md:w-60 m-4 items-center">
-            <GraficosTiposDispesas :dispesas-resumo="porcentagemTiposDespesa" />
+            <GraficosTiposDispesas />
           </div>
         </div>
         <div class="flex flex-col w-full max-h-44 m-4 justify-between">
           <div class="w-full md:w-1/2 overflow-x-auto">
-            <GraficosEntradaSaidas
-              :info-tabela-gastos-entradas="infoTabelaGastosEntradas"
-            />
+            <GraficosEntradaSaidas @valor-editado="refeshDash()" />
           </div>
         </div>
       </div>

@@ -1,21 +1,25 @@
 <script setup lang="ts">
-import type { PropType } from "vue";
+import type { tipoInfoTabelaGastosEntradas } from "~/types/states";
+const emits = defineEmits(["valorEditado"]);
 
-const props = defineProps({
-  infoTabelaGastosEntradas: {
-    default: [],
-    type: Object as PropType<
-      {
-        id_entrada_saida: number;
-        data: string;
-        valor: number;
-        tipo: string;
-        style: string;
-      }[]
-    >,
-  },
-});
+const infoTabelaGastosEntradas = useState<tipoInfoTabelaGastosEntradas[]>('infoTabelaGastosEntradas')
 
+const pendingDel = ref(false);
+async function deleteValor(id: number) {
+  pendingDel.value = true;
+  console.log();
+  await useFetch(`/api/${id}`, {
+    method:"DELETE",
+    cache:"no-cache"
+  })
+    .then(() => {
+      emits("valorEditado");
+    })
+    .catch(() => {})
+    .finally(() => {
+      pendingDel.value = false;
+    });
+}
 </script>
 <template>
   <table class="table table-xs bg-slate-300">
@@ -36,19 +40,23 @@ const props = defineProps({
         <td>{{ i.data }}</td>
         <td>R$ {{ i.valor.toFixed(2) }}</td>
         <td>
-          <button class="btn btn-info btn-xs">
+          <button :disabled="pendingDel" class="btn btn-info btn-xs">
             <Icon name="material-symbols:edit" />
           </button>
         </td>
         <td>
-          <button class="btn btn-error btn-xs">
+          <button
+            :disabled="pendingDel"
+            @click="deleteValor(i.id_entrada_saida)"
+            class="btn btn-error btn-xs"
+          >
             <Icon name="octicon:trashcan" />
           </button>
         </td>
       </tr>
     </tbody>
     <tfoot>
-        <tr>
+      <tr>
         <td style="width: 5%">ID</td>
         <td style="width: 35%">Tipo</td>
         <td style="width: 15%">Data</td>
