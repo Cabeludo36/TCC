@@ -109,7 +109,7 @@ watch(data, () => {
                   :value="porcentagem"
                   max="100"
                 ></progress>
-                <span class="ml-2">{{ porcentagem.toFixed(2) }}%</span>
+                <span class="ml-2">{{ porcentagem ? porcentagem.toFixed(2) : null}}%</span>
               </div>
             </div>
             <ResumosReceitaDispesas />

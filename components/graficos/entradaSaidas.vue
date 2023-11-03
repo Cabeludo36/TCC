@@ -10,7 +10,8 @@ async function deleteValor(id: number) {
   console.log();
   await useFetch(`/api/${id}`, {
     method:"DELETE",
-    cache:"no-cache"
+    cache:"no-cache",
+    retryStatusCodes: [400, 500]
   })
     .then(() => {
       emits("valorEditado");
