@@ -95,9 +95,7 @@ export default defineEventHandler(async (event) => {
         data: moment(x.data).utc(false).format('DD/MM/YYYY'),
         valor: Number(x.valor),
         tipo: x.tipo_entrada_saida.nome,
-        style: x.tipo_entrada_saida.ehParaEntrada
-          ? "bg-green-400"
-          : "bg-red-300",
+        ehParaEntrada: x.tipo_entrada_saida.ehParaEntrada
       };
     });
     //#endregion

@@ -22,5 +22,5 @@ export type tipoInfoTabelaGastosEntradas = {
   data: string;
   valor: number;
   tipo: string;
-  style: string;
+  ehParaEntrada: boolean;
 };

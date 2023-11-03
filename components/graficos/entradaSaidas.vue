@@ -2,16 +2,18 @@
 import type { tipoInfoTabelaGastosEntradas } from "~/types/states";
 const emits = defineEmits(["valorEditado"]);
 
-const infoTabelaGastosEntradas = useState<tipoInfoTabelaGastosEntradas[]>('infoTabelaGastosEntradas')
+const infoTabelaGastosEntradas = useState<tipoInfoTabelaGastosEntradas[]>(
+  "infoTabelaGastosEntradas"
+);
 
 const pendingDel = ref(false);
 async function deleteValor(id: number) {
   pendingDel.value = true;
   console.log();
   await useFetch(`/api/${id}`, {
-    method:"DELETE",
-    cache:"no-cache",
-    retryStatusCodes: [400, 500]
+    method: "DELETE",
+    cache: "no-cache",
+    retryStatusCodes: [400, 500],
   })
     .then(() => {
       emits("valorEditado");
@@ -35,7 +37,13 @@ async function deleteValor(id: number) {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="i of infoTabelaGastosEntradas" :class="i.style">
+      <tr
+        v-for="i of infoTabelaGastosEntradas"
+        v-bind:class="{
+          'bg-green-300': i.ehParaEntrada,
+          'bg-red-300': !i.ehParaEntrada,
+        }"
+      >
         <th>{{ i.id_entrada_saida }}</th>
         <td>{{ i.tipo }}</td>
         <td>{{ i.data }}</td>
