@@ -1,3 +1,4 @@
+import moment from "moment";
 import prisma from "../database/db";
 
 export default defineEventHandler(async (event) => {
@@ -70,8 +71,37 @@ export default defineEventHandler(async (event) => {
       const per = (100 / Number(dispeas._sum.valor)) * Number(x._sum.valor);
       return { soma: Number(x._sum.valor), tipo: tipo.nome, per: per };
     });
-    
+
     //#endregion
+
+    //#region tabela gastos entradas
+    const gastosEntradas = await prisma.entrada_saida.findMany({
+      select: {
+        id_entrada_saida: true,
+        data: true,
+        valor: true,
+        tipo_entrada_saida: {
+          select: {
+            nome: true,
+            ehParaEntrada: true,
+          },
+        },
+      },
+    });
+
+    const infoTabelaGastosEntradas = gastosEntradas.map((x) => {
+      return {
+        id_entrada_saida: x.id_entrada_saida,
+        data: moment(x.data).utc(false).format('DD/MM/YYYY'),
+        valor: Number(x.valor),
+        tipo: x.tipo_entrada_saida.nome,
+        style: x.tipo_entrada_saida.ehParaEntrada
+          ? "bg-green-400"
+          : "bg-red-300",
+      };
+    });
+    //#endregion
+
     r = {
       tipos: tipos.map((x) => {
         return {
@@ -88,6 +118,7 @@ export default defineEventHandler(async (event) => {
       },
       porcentagemRestante: Number(porcentagem),
       porcentagemGastos: porcentagemGastos,
+      infoTabelaGastosEntradas: infoTabelaGastosEntradas
     };
   } catch (error) {
     setResponseStatus(event, 500);

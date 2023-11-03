@@ -31,6 +31,15 @@ const porcentagem = ref(0);
 const porcentagemTiposDespesa = ref<
   { soma: number; tipo: string; per: number }[]
 >([]);
+const infoTabelaGastosEntradas = ref<
+  {
+    id_entrada_saida: number;
+    data: string;
+    valor: number;
+    tipo: string;
+    style: string;
+  }[]
+>([]);
 function setValues() {
   pageInfo = data.value as Exclude<typeof data.value, string>;
   if (pageInfo?.tipos) tiposRendaDispesa.value = pageInfo.tipos;
@@ -49,6 +58,10 @@ function setValues() {
 
   if (pageInfo?.porcentagemGastos) {
     porcentagemTiposDespesa.value = pageInfo.porcentagemGastos;
+  }
+
+  if (pageInfo?.infoTabelaGastosEntradas) {
+    infoTabelaGastosEntradas.value = pageInfo.infoTabelaGastosEntradas;
   }
 }
 setValues();
@@ -83,7 +96,6 @@ watch(data, () => {
       </div>
       <div class="divider">Resumo</div>
       <div class="grid card bg-base-300 rounded-box place-items-center p-6">
-        <div class="flex flex-row"></div>
         <div
           class="flex flex-col justify-between md:flex-row md:w-40 lg:w-full"
         >
@@ -110,7 +122,13 @@ watch(data, () => {
             <GraficosTiposDispesas :dispesas-resumo="porcentagemTiposDespesa" />
           </div>
         </div>
-        <GraficosEntradaSaidas />
+        <div class="flex flex-col w-full max-h-44 m-4 justify-between">
+          <div class="w-full md:w-1/2 overflow-x-auto">
+            <GraficosEntradaSaidas
+              :info-tabela-gastos-entradas="infoTabelaGastosEntradas"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
