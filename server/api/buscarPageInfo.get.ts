@@ -40,12 +40,26 @@ export default defineEventHandler(async (event) => {
 
     let diferenca = null;
     if (renda._sum.valor !== null && dispeas._sum.valor !== null) {
-      diferenca = Number(Number(renda._sum.valor) - Number(dispeas._sum.valor));
+      let ganho = 0;
+      if (renda._sum.valor != null) {
+        ganho = Number(renda._sum.valor);
+      }
+
+      let perda = 0;
+      if (dispeas._sum.valor != null) {
+        perda = Number(dispeas._sum.valor);
+      }
+
+      diferenca = Number(ganho - perda);
     }
 
-    let porcentagem = null;
+    let porcentagem = 0;
     if (diferenca !== null) {
-      porcentagem = (100 / Number(renda._sum.valor)) * diferenca;
+      let ganho = 0;
+      if (renda._sum.valor) {
+        ganho = Number(renda._sum.valor);
+      }
+      porcentagem = (100 / ganho) * diferenca;
     }
     //#endregion
 
@@ -92,10 +106,10 @@ export default defineEventHandler(async (event) => {
     const infoTabelaGastosEntradas = gastosEntradas.map((x) => {
       return {
         id_entrada_saida: x.id_entrada_saida,
-        data: moment(x.data).utc(false).format('DD/MM/YYYY'),
+        data: moment(x.data).utc(false).format("DD/MM/YYYY"),
         valor: Number(x.valor),
         tipo: x.tipo_entrada_saida.nome,
-        ehParaEntrada: x.tipo_entrada_saida.ehParaEntrada
+        ehParaEntrada: x.tipo_entrada_saida.ehParaEntrada,
       };
     });
     //#endregion
@@ -116,7 +130,7 @@ export default defineEventHandler(async (event) => {
       },
       porcentagemRestante: Number(porcentagem),
       porcentagemGastos: porcentagemGastos,
-      infoTabelaGastosEntradas: infoTabelaGastosEntradas
+      infoTabelaGastosEntradas: infoTabelaGastosEntradas,
     };
   } catch (error) {
     setResponseStatus(event, 500);
