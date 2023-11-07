@@ -7,7 +7,7 @@ import type {
 } from "./types/states";
 
 useHead({
-  title: "Bugedt Tracker",
+  title: "Budget Tracker",
   htmlAttrs: {
     "data-theme": "light",
     lang: "pt-BR",
