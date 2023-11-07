@@ -2,7 +2,7 @@
 import type { tipoRendaDispesa } from "~/types/states";
 
 defineEmits(["fecharTipos"]);
-const tipos = useState<tipoRendaDispesa[]>("tiposDispesaEntrada");
+const tipos = useState<tipoRendaDispesa[]>("tiposRendaDispesa");
 const fecharTipos = ref<HTMLButtonElement>();
 
 //#region nome
